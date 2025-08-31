@@ -5,6 +5,8 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import fs from "fs";
+import http from "http";
+import https from "https";
 
 dotenv.config();
 
@@ -21,6 +23,7 @@ const statuses = JSON.parse(
 
 const API_KEY = process.env.API_KEY || "changeme";
 const PORT = process.env.PORT || 3000;
+const USE_HTTPS = process.env.USE_HTTPS === "true"; // toggle in .env
 
 let currentStatus = "open";
 
@@ -80,6 +83,28 @@ app.get("/client.js", (req, res) => {
 });
 
 // --- Start Server ---
-app.listen(PORT, () => {
-  console.log(`✅ Status Display running at http://localhost:${PORT}`);
-});
+if (USE_HTTPS) {
+  try {
+    const options = {
+      key: fs.readFileSync(
+        "/etc/letsencrypt/live/geckohex.app/privkey.pem"
+      ),
+      cert: fs.readFileSync(
+        "/etc/letsencrypt/live/geckohex.app/fullchain.pem"
+      ),
+    };
+
+    https.createServer(options, app).listen(443, "0.0.0.0", () => {
+      console.log("✅ Status Display running at https://geckohex.app");
+    });
+  } catch (err) {
+    console.error("❌ Failed to load SSL certs, falling back to HTTP:", err);
+    http.createServer(app).listen(PORT, "0.0.0.0", () => {
+      console.log(`✅ Status Display running at http://0.0.0.0:${PORT}`);
+    });
+  }
+} else {
+  http.createServer(app).listen(PORT, "0.0.0.0", () => {
+    console.log(`✅ Status Display running at http://0.0.0.0:${PORT}`);
+  });
+}

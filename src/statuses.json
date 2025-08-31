@@ -1,17 +1,37 @@
 [
   {
-    "status": "open",
-    "icon": "/icons/open.svg",
-    "label": "OPEN"
+    "status": "not-in",
+    "icon": "/icons/ban.svg",
+    "label": "Unavailable"
   },
   {
-    "status": "closed",
-    "icon": "/icons/closed.svg",
-    "label": "CLOSED"
+    "status": "quiet",
+    "icon": "/icons/bell-slash-fill.svg",
+    "label": "Quiet Please"
   },
   {
-    "status": "busy",
-    "icon": "/icons/busy.svg",
-    "label": "BUSY"
+    "status": "full-availability",
+    "icon": "/icons/emoji-smile-fill.svg",
+    "label": "Come on in!"
+  },
+  {
+    "status": "welcome",
+    "icon": "/icons/hand-thumbs-up-fill.svg",
+    "label": "Welcome"
+  },
+  {
+    "status": "break",
+    "icon": "/icons/hourglass-split.svg",
+    "label": "On Break"
+  },
+  {
+    "status": "dnd",
+    "icon": "/icons/moon-fill.svg",
+    "label": "Do Not Disturb"
+  },
+  {
+    "status": "meeting",
+    "icon": "/icons/telephone-forward-fill.svg",
+    "label": "In a Meeting"
   }
 ]

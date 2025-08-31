@@ -1,8 +1,8 @@
 [
   {
     "status": "null",
-    "icon": "/icons/exclamation-circle-fill.svg",
-    "label": "Special - Awaiting First Boot"
+    "icon": "icons/question-diamond.svg",
+    "label": "No Status Set"
   },
   {
     "status": "not-in",

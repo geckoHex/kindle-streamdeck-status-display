@@ -1,4 +1,4 @@
-// server.js (Kindle-optimized display)
+// server.js
 import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
+const app = express(); // <-- THIS is what was missing
 app.use(bodyParser.json());
 
 // Serve static files (icons, CSS, etc.)
@@ -27,14 +27,13 @@ app.post("/status", (req, res) => {
   }
 });
 
-// Endpoint to get current status (for API use)
+// Endpoint to get current status
 app.get("/status", (req, res) => {
   res.json({ status: currentStatus });
 });
 
 // Kindle-friendly webpage
 app.get("/", (req, res) => {
-  // Pick icon + label based on status
   let icon = "open.svg";
   let label = "OPEN";
 
@@ -42,14 +41,14 @@ app.get("/", (req, res) => {
     icon = "closed.svg";
     label = "CLOSED";
   } else if (currentStatus === "busy") {
-    icon = "closed.svg"; // or add busy.svg later
+    icon = "closed.svg"; // or busy.svg if you add one
     label = "BUSY";
   }
 
   res.send(`
     <html>
       <head>
-        <meta http-equiv="refresh" content="30"> <!-- refresh every 30s -->
+        <meta http-equiv="refresh" content="1"> <!-- refresh every 1s -->
         <style>
           body {
             margin: 0;
@@ -83,4 +82,4 @@ app.get("/", (req, res) => {
   `);
 });
 
-app.listen(3000, () => console.log("Server running on port 3000"));
+app.listen(3000, () => console.log("✅ Server running on http://localhost:3000"));

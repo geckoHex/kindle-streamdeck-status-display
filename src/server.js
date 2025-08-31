@@ -25,7 +25,7 @@ const API_KEY = process.env.API_KEY || "changeme";
 const PORT = process.env.PORT || 3000;
 const USE_HTTPS = process.env.USE_HTTPS === "true"; // toggle in .env
 
-let currentStatus = "open";
+let currentStatus = "null";
 
 // --- Middleware: API Key Authentication ---
 function checkAuth(req, res, next) {

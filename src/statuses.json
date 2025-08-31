@@ -1,5 +1,10 @@
 [
   {
+    "status": "null",
+    "icon": "/icons/exclamation-circle-fill.svg",
+    "label": "Special - Awaiting First Boot"
+  },
+  {
     "status": "not-in",
     "icon": "/icons/ban.svg",
     "label": "Unavailable"

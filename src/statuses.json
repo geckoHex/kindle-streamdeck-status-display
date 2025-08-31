@@ -10,9 +10,9 @@
     "label": "Quiet Please"
   },
   {
-    "status": "full-availability",
+    "status": "hello",
     "icon": "/icons/emoji-smile-fill.svg",
-    "label": "Come on in!"
+    "label": "Hello!"
   },
   {
     "status": "welcome",

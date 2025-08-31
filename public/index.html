@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Status Display</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <img id="status-icon" class="icon" src="open.svg" alt="status icon" />
+    <div id="status-text" class="status">OPEN</div>
+
+    <script>
+      async function updateStatus() {
+        try {
+          const res = await fetch("/status");
+          const data = await res.json();
+          const status = data.status || "open";
+
+          const iconEl = document.getElementById("status-icon");
+          const textEl = document.getElementById("status-text");
+
+          if (status === "closed") {
+            iconEl.src = "closed.svg";
+            textEl.textContent = "CLOSED";
+          } else if (status === "busy") {
+            iconEl.src = "busy.svg";
+            textEl.textContent = "BUSY";
+          } else {
+            iconEl.src = "open.svg";
+            textEl.textContent = "OPEN";
+          }
+        } catch (err) {
+          console.error("Failed to fetch status", err);
+        }
+      }
+
+      // Update every 3s
+      updateStatus();
+      setInterval(updateStatus, 3000);
+    </script>
+  </body>
+</html>

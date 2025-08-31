@@ -101,7 +101,7 @@ http://localhost:3000/
 ```
 
 - The page will show the current status with its icon and label.  
-- It auto‑refreshes every 3 seconds using lightweight JavaScript.  
+- It auto‑refreshes every 500 milliseconds using lightweight JavaScript.  
 
 ## 🎛 Stream Deck Integration
 Configure a Stream Deck button to send an HTTP request:

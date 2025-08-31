@@ -15,6 +15,6 @@ async function updateStatus() {
   }
 }
 
-// Initial update + refresh every 3s
+// Initial update + refresh every 500ms
 updateStatus();
-setInterval(updateStatus, 3000);
+setInterval(updateStatus, 500);

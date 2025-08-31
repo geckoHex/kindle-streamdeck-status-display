@@ -7,7 +7,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express(); // <-- THIS is what was missing
+const app = express();
 app.use(bodyParser.json());
 
 // Serve static files (icons, CSS, etc.)
@@ -15,8 +15,27 @@ app.use(express.static(path.join(__dirname, "public")));
 
 let currentStatus = "open"; // default
 
-// Endpoint to update status
-app.post("/status", (req, res) => {
+// 🔑 Define your API key (in production, load from env var)
+const API_KEY = "supersecret123";
+
+// Middleware to check API key
+function checkAuth(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  if (!authHeader) {
+    return res.status(401).json({ error: "Missing Authorization header" });
+  }
+
+  // Expect header like: Authorization: Bearer supersecret123
+  const token = authHeader.split(" ")[1];
+  if (token !== API_KEY) {
+    return res.status(403).json({ error: "Invalid API key" });
+  }
+
+  next();
+}
+
+// Endpoint to update status (protected)
+app.post("/status", checkAuth, (req, res) => {
   const { status } = req.body;
   if (status) {
     currentStatus = status.toLowerCase();
@@ -27,12 +46,12 @@ app.post("/status", (req, res) => {
   }
 });
 
-// Endpoint to get current status
+// Endpoint to get current status (public, Kindle uses this)
 app.get("/status", (req, res) => {
   res.json({ status: currentStatus });
 });
 
-// Kindle-friendly webpage
+// Kindle-friendly webpage (public)
 app.get("/", (req, res) => {
   let icon = "open.svg";
   let label = "OPEN";
@@ -48,7 +67,7 @@ app.get("/", (req, res) => {
   res.send(`
     <html>
       <head>
-        <meta http-equiv="refresh" content="1"> <!-- refresh every 1s -->
+        <meta http-equiv="refresh" content="3">
         <style>
           body {
             margin: 0;
@@ -82,4 +101,6 @@ app.get("/", (req, res) => {
   `);
 });
 
-app.listen(3000, () => console.log("✅ Server running on http://localhost:3000"));
+app.listen(3000, () =>
+  console.log("✅ Server running on http://localhost:3000")
+);

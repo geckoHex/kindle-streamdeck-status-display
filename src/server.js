@@ -1,9 +1,10 @@
-// src/server.js (ESM version)
+// src/server.js
 import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
+import fs from "fs";
 
 dotenv.config();
 
@@ -12,6 +13,11 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(bodyParser.json());
+
+// Load statuses from JSON
+const statuses = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "statuses.json"), "utf-8")
+);
 
 const API_KEY = process.env.API_KEY || "changeme";
 const PORT = process.env.PORT || 3000;
@@ -32,18 +38,31 @@ function checkAuth(req, res, next) {
 }
 
 // --- Routes ---
+
+// Update status (protected)
 app.post("/status", checkAuth, (req, res) => {
   const { status } = req.body;
   if (!status) {
     return res.status(400).json({ success: false, error: "Missing status" });
   }
+
+  // Validate against statuses.json
+  const valid = statuses.find((s) => s.status === status.toLowerCase());
+  if (!valid) {
+    return res.status(400).json({ success: false, error: "Invalid status" });
+  }
+
   currentStatus = status.toLowerCase();
   console.log("🔄 Status updated:", currentStatus);
   res.json({ success: true, status: currentStatus });
 });
 
+// Get current status (public, Kindle fetches this)
 app.get("/status", (req, res) => {
-  res.json({ status: currentStatus });
+  const statusObj =
+    statuses.find((s) => s.status === currentStatus) ||
+    statuses.find((s) => s.status === "open");
+  res.json(statusObj);
 });
 
 // Serve static SVGs from public/

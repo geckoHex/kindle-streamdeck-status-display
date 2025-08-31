@@ -1,0 +1,17 @@
+[
+  {
+    "status": "open",
+    "icon": "/icons/open.svg",
+    "label": "OPEN"
+  },
+  {
+    "status": "closed",
+    "icon": "/icons/closed.svg",
+    "label": "CLOSED"
+  },
+  {
+    "status": "busy",
+    "icon": "/icons/busy.svg",
+    "label": "BUSY"
+  }
+]
